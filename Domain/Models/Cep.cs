@@ -16,7 +16,7 @@
     {
         public string ibge { get; set; }
         public string nome { get; set; }
-        public int ddd { get; set; }
+        public string ddd { get; set; }
     }
 
     public class Estado

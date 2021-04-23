@@ -32,18 +32,25 @@ namespace Service.CepService
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("Authorization",arrayTokens[i]);
 
-
             HttpResponseMessage response = httpClient.GetAsync(string.Format(urlCepAbertoApi, numCep)).Result;
 
-            if (response.IsSuccessStatusCode)
+            try
             {
-                Cep dadosCep = JsonSerializer.Deserialize<Cep>(response.Content.ReadAsStringAsync().Result);
-                dadosCep.cidade.nome = _nameService.GetMunicipioByIbgeId(int.Parse(dadosCep.cidade.ibge)).nome;
+                if (response.IsSuccessStatusCode)
+                {
+                    Cep dadosCep = JsonSerializer.Deserialize<Cep>(response.Content.ReadAsStringAsync().Result);
+                    dadosCep.cidade.nome = _nameService.GetMunicipioByIbgeId(int.Parse(dadosCep.cidade.ibge)).nome ?? dadosCep.cidade.nome;
 
-                return dadosCep;
+                    return dadosCep;
+                }
+                else
+                    throw new Exception("Erro de autorizacao ao buscar pelo cep");
             }
-            else
-                throw new Exception("Erro de autorizacao ao buscar pelo cep");
+            catch
+            {
+                throw new Exception("Erro ao buscar o Cep!");
+            }
+            
         }
 
         public bool CheckCep(string numCep)
