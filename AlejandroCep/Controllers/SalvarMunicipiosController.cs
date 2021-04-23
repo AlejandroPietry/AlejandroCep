@@ -35,5 +35,16 @@ namespace AlejandroCep.Controllers
 
             return Ok("Items salvos com sucesso");
         }
+
+        [HttpGet(nameof(GetMunicipio))]
+        public IActionResult GetMunicipio(int id)
+        {
+            var cidadeDados = context.GetMunicipioByIbge(id);
+
+            if (cidadeDados != null)
+                return Ok(cidadeDados);
+            else
+                return BadRequest("Cidade não encontrada");
+        }
     }
 }
