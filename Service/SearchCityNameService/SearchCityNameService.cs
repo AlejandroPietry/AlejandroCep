@@ -16,6 +16,12 @@ namespace Service.SearchCityNameService
         {
             context = repository;
         }
+
+        /// <summary>
+        /// Busca dados pelo codigo Ibge da cidade.
+        /// </summary>
+        /// <param name="idIbge">Código Ibge</param>
+        /// <returns></returns>
         public IbgeMunicipio GetMunicipioByIbgeId(int idIbge)
         {
             return context.GetMunicipioByIbge(idIbge);

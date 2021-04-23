@@ -26,6 +26,11 @@ namespace Service.CepService
             _nameService = nameService;
         }
 
+        /// <summary>
+        /// Busca todos os dados relacionado com o Cep.
+        /// </summary>
+        /// <param name="numCep">Cep do endereço.</param>
+        /// <returns></returns>
         public Cep GetCep(string numCep)
         {
             int i = new Random().Next(1);
@@ -53,13 +58,18 @@ namespace Service.CepService
             
         }
 
+        /// <summary>
+        /// Verifica se o cep está em um formato válido.
+        /// </summary>
+        /// <param name="numCep">Cep para ser verificado.</param>
+        /// <returns></returns>
         public bool CheckCep(string numCep)
         {
             numCep = Regex.Replace(numCep, @"\D", "");
-            if (numCep.Length < 8)
-                return false;
-            else
+            if (numCep.Length == 8)
                 return true;
+            else
+                return false;
         }
     }
 }
