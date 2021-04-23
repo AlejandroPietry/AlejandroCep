@@ -20,8 +20,9 @@ namespace AlejandroCep.Controllers
             _cepService = cepService;
         }
 
-        [HttpGet(nameof(Index))]
-        public IActionResult Index(string numCep)
+        [HttpGet]
+        [Route("Get/{numCep}")]
+        public IActionResult Get(string numCep)
         {
             try
             {

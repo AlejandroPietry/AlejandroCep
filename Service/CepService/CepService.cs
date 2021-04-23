@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using Service.SearchCityNameService;
+using System.Text.RegularExpressions;
 
 namespace Service.CepService
 {
@@ -47,7 +48,11 @@ namespace Service.CepService
 
         public bool CheckCep(string numCep)
         {
-            return true;
+            numCep = Regex.Replace(numCep, @"\D", "");
+            if (numCep.Length < 8)
+                return false;
+            else
+                return true;
         }
     }
 }
