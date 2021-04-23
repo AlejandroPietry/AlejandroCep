@@ -1,12 +1,9 @@
 ﻿using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Repository.RepositoryFolder;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace AlejandroCep.Controllers
 {
@@ -28,7 +25,7 @@ namespace AlejandroCep.Controllers
 
             List<IbgeMunicipio> ibgeMunicipios = JsonSerializer.Deserialize<List<IbgeMunicipio>>(json);
 
-            foreach(var cidade in ibgeMunicipios)
+            foreach (var cidade in ibgeMunicipios)
             {
                 context.SaveMunicipio(cidade);
             }

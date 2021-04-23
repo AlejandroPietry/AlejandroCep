@@ -1,12 +1,8 @@
 ﻿using Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.Json;
 using Service.SearchCityNameService;
+using System;
+using System.Net.Http;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace Service.CepService
@@ -35,7 +31,7 @@ namespace Service.CepService
         {
             int i = new Random().Next(1);
             HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Add("Authorization",arrayTokens[i]);
+            httpClient.DefaultRequestHeaders.Add("Authorization", arrayTokens[i]);
 
             HttpResponseMessage response = httpClient.GetAsync(string.Format(urlCepAbertoApi, numCep)).Result;
 
@@ -55,7 +51,7 @@ namespace Service.CepService
             {
                 throw new Exception("Erro ao buscar o Cep!");
             }
-            
+
         }
 
         /// <summary>

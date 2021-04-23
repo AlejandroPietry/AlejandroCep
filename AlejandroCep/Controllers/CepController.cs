@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Service.CepService;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AlejandroCep.Controllers
 {
@@ -31,7 +28,7 @@ namespace AlejandroCep.Controllers
                 else
                     return BadRequest("Cep não no formato invalido");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(e);
             }
