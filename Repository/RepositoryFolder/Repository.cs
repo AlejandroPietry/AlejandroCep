@@ -23,5 +23,26 @@ namespace Repository.RepositoryFolder
             context.ibgeMunicipios.Add(ibgeMunicipio);
             context.SaveChanges();
         }
+
+        public User GetUser(User user)
+        {
+           return context.Users.FirstOrDefault(x => x.UserName == user.UserName && x.Password == x.Password);
+        }
+
+        public LogLogin GetLogLogin(int userId)
+        {
+            return context.Logs_Login.Where(x => x.UserId == userId).OrderByDescending(x => x.Id).FirstOrDefault();
+        }
+        public void SetLogLogin(int userId)
+        {
+            context.Logs_Login.Add(new LogLogin { UserId = userId });
+            context.SaveChangesAsync();
+        }
+        public void DeleteLogLogin(int userId)
+        {
+            LogLogin logLogin = GetLogLogin(userId);
+            context.Logs_Login.Remove(logLogin);
+            context.SaveChanges();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repository.RepositoryFolder;
 using System.Collections.Generic;
@@ -17,7 +18,9 @@ namespace AlejandroCep.Controllers
         {
             context = repository;
         }
+
         [HttpGet(nameof(Index))]
+        [Authorize(Roles = "Desenvolvedor")]
         public IActionResult Index(int id)
         {
             var client = new WebClient();
@@ -34,6 +37,7 @@ namespace AlejandroCep.Controllers
         }
 
         [HttpGet(nameof(GetMunicipio))]
+        [AllowAnonymous]
         public IActionResult GetMunicipio(int id)
         {
             var cidadeDados = context.GetMunicipioByIbge(id);

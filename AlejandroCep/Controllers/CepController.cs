@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Service.CepService;
@@ -18,13 +19,14 @@ namespace AlejandroCep.Controllers
         }
 
         [HttpGet]
-        [Route("Get/{numCep}")]
-        public IActionResult Get(string numCep)
+        [Route("Get/{cep}")]
+        [Authorize]
+        public IActionResult Get(string cep)
         {
             try
             {
-                if (_cepService.CheckCep(numCep))
-                    return Ok(_cepService.GetCep(numCep));
+                if (_cepService.CheckCep(cep))
+                    return Ok(_cepService.GetCep(cep));
                 else
                     return BadRequest("Cep não no formato invalido");
             }

@@ -4,7 +4,7 @@
     {
         public Cidade cidade { get; set; }
         public Estado estado { get; set; }
-        public double altitude { get; set; }
+        public string altitude { get; set; }
         public string longitude { get; set; }
         public string bairro { get; set; }
         public string complemento { get; set; }

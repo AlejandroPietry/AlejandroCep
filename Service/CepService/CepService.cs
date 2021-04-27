@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Newtonsoft.Json;
 using Service.SearchCityNameService;
 using System;
 using System.Net.Http;
@@ -39,7 +40,7 @@ namespace Service.CepService
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    Cep dadosCep = JsonSerializer.Deserialize<Cep>(response.Content.ReadAsStringAsync().Result);
+                    Cep dadosCep = JsonConvert.DeserializeObject<Cep>(response.Content.ReadAsStringAsync().Result);
                     dadosCep.cidade.nome = _nameService.GetMunicipioByIbgeId(int.Parse(dadosCep.cidade.ibge)).nome ?? dadosCep.cidade.nome;
 
                     return dadosCep;
@@ -47,7 +48,7 @@ namespace Service.CepService
                 else
                     throw new Exception("Erro de autorizacao ao buscar pelo cep");
             }
-            catch
+            catch(Exception e)
             {
                 throw new Exception("Erro ao buscar o Cep!");
             }

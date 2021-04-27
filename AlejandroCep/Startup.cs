@@ -1,14 +1,18 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Repository.DbContextFolder;
 using Repository.RepositoryFolder;
 using Service.CepService;
 using Service.SearchCityNameService;
+using Service.TokenService;
+using System.Text;
 
 namespace AlejandroCep
 {
@@ -24,8 +28,27 @@ namespace AlejandroCep
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors();
             services.AddControllers();
+            var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("ChaveSecreta"));
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AlejandroCep", Version = "v1" });
@@ -35,6 +58,7 @@ namespace AlejandroCep
             services.AddScoped(typeof(IRepository), typeof(Repository.RepositoryFolder.Repository));
             services.AddTransient(typeof(ICepService), typeof(CepService));
             services.AddTransient(typeof(ISearchCityNameService), typeof(SearchCityNameService));
+            services.AddTransient(typeof(ITokenService), typeof(TokenService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +75,12 @@ namespace AlejandroCep
 
             app.UseRouting();
 
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
