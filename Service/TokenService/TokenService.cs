@@ -29,19 +29,17 @@ namespace Service.TokenService
                     new Claim(ClaimTypes.SerialNumber, user.Id.ToString()),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(2),
+                Expires = DateTime.UtcNow.AddHours(8),
 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)                   
             });
+            
             return tokenHandler.WriteToken(token);
         }
 
         public string GenerateRefreshToken(string username)
         {
-            var refreshToken = new RefreshToken
-            {
-                Us
-            }
+            return string.Empty;
         }
     }
 }

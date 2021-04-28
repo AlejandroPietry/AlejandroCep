@@ -8,7 +8,7 @@ namespace Repository.DbContextFolder
         public DbSet<IbgeMunicipio> ibgeMunicipios { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<LogLogin> Logs_Login { get; set; }
-
+        public DbSet<JwtToken> jwtTokens { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 

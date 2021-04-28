@@ -10,5 +10,9 @@ namespace Repository.RepositoryFolder
         LogLogin GetLogLogin(int userId);
         void SetLogLogin(int userId);
         void DeleteLogLogin(int userId);
+        JwtToken GetSingleActiveUserToken(int userId);
+        void BlockedJwtToken(JwtToken jwtToken);
+        void AddJwtToken(string token, int userId);
+        JwtToken CheckTokenStatus(string token);
     }
 }

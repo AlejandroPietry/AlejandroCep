@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Service.CepService;
@@ -34,7 +33,6 @@ namespace AlejandroCep.Controllers
             {
                 return BadRequest(e);
             }
-
         }
     }
 }
