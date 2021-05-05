@@ -52,7 +52,6 @@ namespace AlejandroCep.Controllers
             {
                 return BadRequest(e);
             }
-
         }
     }
 }

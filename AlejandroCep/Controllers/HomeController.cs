@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Net.WebSockets;
 
 namespace AlejandroCep.Controllers
 {
@@ -29,28 +30,25 @@ namespace AlejandroCep.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<dynamic>> Authenticate([FromBody] User model)
         {
-            var ipadress = IpAdress();
             User user = _context.GetUser(model);
 
             if (user == null)
                 return NotFound(new { message = "Usuário ou senha inválidos!" });
 
-            LogLogin logLogin = _context.GetLogLogin(user.Id);
+            JwtToken jwtToken = _context.GetSingleActiveUserToken(user.Id);
 
-            if(logLogin is null || !logLogin.IsActive())
+            if (jwtToken != null)
+                _context.BlockedJwtToken(jwtToken);
+
+            string token = _tokenService.GenerateToken(user);
+            user.Password = "";
+
+            _context.AddJwtToken(token, user.Id);
+            return new
             {
-                var token = _tokenService.GenerateToken(user);
-                _context.SetLogLogin(user.Id);
-                user.Password = "";
-
-                return new
-                {
-                    user = user,
-                    token = token
-                };
-            }
-
-            return BadRequest(new {message = "Usuário ja esta logado" });
+                user = user,
+                token = token
+            };
         }
 
         [HttpPost]
@@ -62,7 +60,18 @@ namespace AlejandroCep.Controllers
             _context.DeleteLogLogin(int.Parse(userId));
         }
 
+        [HttpGet]
+        [Route("checktokenstatus")]
+        [AllowAnonymous]
+        public IActionResult CheckTokenStatus([FromBody] string token)
+        {
+            var tokenObj = _context.CheckTokenStatus(token);
 
+            if (token != null)
+                return Ok(new { isUsed = tokenObj.IsUsed });
+            else
+                return NotFound();
+        }
 
         [HttpGet]
         [Route("authenticated")]
@@ -88,5 +97,7 @@ namespace AlejandroCep.Controllers
             else
                 return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
         }
+        //401: nao autorizado pq nao te conhece.
+        //403: eu sei quem vc é só que o que voce ta tentando fazer oq vc nao pode.
     }
 }
