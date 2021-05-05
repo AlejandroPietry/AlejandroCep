@@ -35,13 +35,5 @@ namespace Service.TokenService
             });
             return tokenHandler.WriteToken(token);
         }
-
-        public string GenerateRefreshToken(string username)
-        {
-            var refreshToken = new RefreshToken
-            {
-                Us
-            }
-        }
     }
 }

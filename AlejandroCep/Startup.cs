@@ -54,11 +54,14 @@ namespace AlejandroCep
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AlejandroCep", Version = "v1" });
             });
 
+            services.AddMemoryCache();
+
             services.AddDbContext<ApplicationDbContext>(item => item.UseSqlite(Configuration.GetConnectionString("master")));
             services.AddScoped(typeof(IRepository), typeof(Repository.RepositoryFolder.Repository));
             services.AddTransient(typeof(ICepService), typeof(CepService));
             services.AddTransient(typeof(ISearchCityNameService), typeof(SearchCityNameService));
             services.AddTransient(typeof(ITokenService), typeof(TokenService));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

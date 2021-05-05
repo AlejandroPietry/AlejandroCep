@@ -15,7 +15,7 @@ namespace Repository.RepositoryFolder
 
         public IbgeMunicipio GetMunicipioByIbge(int ibge)
         {
-            return context.ibgeMunicipios.Where(x => x.id == ibge).First();
+            return context.ibgeMunicipios.Where(x => x.id == ibge).FirstOrDefault();
         }
 
         public void SaveMunicipio(IbgeMunicipio ibgeMunicipio)

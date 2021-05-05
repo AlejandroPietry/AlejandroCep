@@ -1,7 +1,9 @@
 ﻿using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Repository.RepositoryFolder;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
@@ -12,11 +14,13 @@ namespace AlejandroCep.Controllers
     [ApiController]
     public class SalvarMunicipiosController : ControllerBase
     {
-        private readonly IRepository context;
+        private readonly IRepository _context;
+        private readonly IMemoryCache _memoryCache;
 
-        public SalvarMunicipiosController(IRepository repository)
+        public SalvarMunicipiosController(IRepository repository, IMemoryCache memoryCache)
         {
-            context = repository;
+            _context = repository;
+            _memoryCache = memoryCache;
         }
 
         [HttpGet(nameof(Index))]
@@ -30,7 +34,7 @@ namespace AlejandroCep.Controllers
 
             foreach (var cidade in ibgeMunicipios)
             {
-                context.SaveMunicipio(cidade);
+                _context.SaveMunicipio(cidade);
             }
 
             return Ok("Items salvos com sucesso");
@@ -40,12 +44,27 @@ namespace AlejandroCep.Controllers
         [AllowAnonymous]
         public IActionResult GetMunicipio(int id)
         {
-            var cidadeDados = context.GetMunicipioByIbge(id);
-
-            if (cidadeDados != null)
-                return Ok(cidadeDados);
+            if (_memoryCache.TryGetValue(id, out object cidadeData))
+            {
+                return Ok(cidadeData);
+            }
             else
-                return BadRequest("Cidade não encontrada");
+            {
+                var cidadeDados = _context.GetMunicipioByIbge(id);
+
+                if (cidadeDados != null)
+                {
+                    var memoryCacheEntryOptions = new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(3600),
+                        SlidingExpiration = TimeSpan.FromSeconds(1200)
+                    };
+                    _memoryCache.Set(cidadeDados.id, cidadeDados);
+                    return Ok(cidadeDados);
+                }
+                else
+                    return BadRequest("Cidade não encontrada");
+            }
         }
     }
 }
