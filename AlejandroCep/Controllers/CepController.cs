@@ -1,5 +1,4 @@
-﻿
-using Domain.Models;
+﻿using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -38,8 +37,8 @@ namespace AlejandroCep.Controllers
 
                     MemoryCacheEntryOptions memoryCacheEntryOptions = new MemoryCacheEntryOptions
                     {
-                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(3600),
-                        SlidingExpiration = TimeSpan.FromSeconds(1200)
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1200),
+                        SlidingExpiration = TimeSpan.FromSeconds(300)
                     };
                     _memoryCache.Set(dadosCep.cep, dadosCep);
 
