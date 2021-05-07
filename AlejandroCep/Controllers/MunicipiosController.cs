@@ -12,12 +12,12 @@ namespace AlejandroCep.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class SalvarMunicipiosController : ControllerBase
+    public class MunicipiosController : ControllerBase
     {
         private readonly IRepository _context;
         private readonly IMemoryCache _memoryCache;
 
-        public SalvarMunicipiosController(IRepository repository, IMemoryCache memoryCache)
+        public MunicipiosController(IRepository repository, IMemoryCache memoryCache)
         {
             _context = repository;
             _memoryCache = memoryCache;

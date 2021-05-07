@@ -35,9 +35,6 @@ namespace Service.TokenService
             });
             
             return tokenHandler.WriteToken(token);
-        }
-                Us
-            }
-        }
+        }        
     }
 }

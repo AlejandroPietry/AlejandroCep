@@ -34,43 +34,14 @@ namespace AlejandroCep.Controllers
 
             if (user == null)
                 return NotFound(new { message = "Usuário ou senha inválidos!" });
-
-            JwtToken jwtToken = _context.GetSingleActiveUserToken(user.Id);
-
-            if (jwtToken != null)
-                _context.BlockedJwtToken(jwtToken);
-
             string token = _tokenService.GenerateToken(user);
             user.Password = "";
 
-            _context.AddJwtToken(token, user.Id);
             return new
             {
                 user = user,
                 token = token
             };
-        }
-
-        [HttpPost]
-        [Route("logout")]
-        [Authorize]
-        public void LogOut()
-        {
-            string userId = User.Claims.First(x => x.Type == ClaimTypes.SerialNumber).Value;
-            _context.DeleteLogLogin(int.Parse(userId));
-        }
-
-        [HttpGet]
-        [Route("checktokenstatus")]
-        [AllowAnonymous]
-        public IActionResult CheckTokenStatus([FromBody] string token)
-        {
-            var tokenObj = _context.CheckTokenStatus(token);
-
-            if (token != null)
-                return Ok(new { isUsed = tokenObj.IsUsed });
-            else
-                return NotFound();
         }
 
         [HttpGet]
@@ -88,7 +59,6 @@ namespace AlejandroCep.Controllers
         [Route("cliente")]
         [Authorize(Roles = "Cliente")]
         public string Cliente() => "somente cliente";
-
 
         private string IpAdress()
         {
