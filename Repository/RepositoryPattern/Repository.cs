@@ -1,7 +1,9 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.DbContextFolder;
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Repository.RepositoryPattern
 {
@@ -16,9 +18,9 @@ namespace Repository.RepositoryPattern
             _entity = dbContext.Set<T>();
         }
 
-        public T Get(int id)
+        public T Get(Expression<Func<T, bool>> expression )
         {
-            return _entity.SingleOrDefault(x => x.Id == id);
+            return _entity.FirstOrDefault(expression);
         }
 
         public void Insert(T entity)

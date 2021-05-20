@@ -1,18 +1,20 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Domain.EntityMapper
 {
-    public class IbgeMunicipioMap : IEntityTypeConfiguration<IbgeMunicipio>
+    public class UserMap : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<IbgeMunicipio> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property(x => x.Id)
                 .HasColumnName("id");
-
-            builder.Property(x => x.nome)
-                .HasColumnName("nome");
 
             builder.Property(x => x.DateCreated)
                 .HasColumnName("dateCreated")
@@ -21,6 +23,7 @@ namespace Domain.EntityMapper
             builder.Property(x => x.IsActive)
                 .HasColumnName("isActive")
                 .HasColumnType("bit");
+
         }
     }
 }

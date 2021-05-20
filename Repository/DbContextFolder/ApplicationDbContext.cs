@@ -6,8 +6,6 @@ namespace Repository.DbContextFolder
 {
     public class ApplicationDbContext : DbContext
     {
-        //public DbSet<IbgeMunicipio> ibgeMunicipios { get; set; }
-        //public DbSet<User> Users { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
@@ -16,6 +14,7 @@ namespace Repository.DbContextFolder
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new IbgeMunicipioMap());
+            modelBuilder.ApplyConfiguration(new UserMap());
             base.OnModelCreating(modelBuilder);
         }
     }
