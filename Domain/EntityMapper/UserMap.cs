@@ -1,11 +1,6 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.EntityMapper
 {
@@ -24,6 +19,17 @@ namespace Domain.EntityMapper
                 .HasColumnName("isActive")
                 .HasColumnType("bit");
 
+            builder.Property(x => x.Password)
+                .HasColumnName("password")
+                .HasColumnType("text");
+
+            builder.Property(x => x.Role)
+                .HasColumnName("role")
+                .HasColumnType("NVARCHAR(50)");
+
+            builder.Property(x => x.UserName)
+                .HasColumnName("username")
+                .HasColumnType("NVARCHAR(200)");
         }
     }
 }

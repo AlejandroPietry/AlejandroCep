@@ -1,15 +1,18 @@
 ﻿using Domain.Models;
-using Repository.RepositoryFolder;
+using Repository.RepositoryPattern;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Service.SearchCityNameService
 {
     public class SearchCityNameService : ISearchCityNameService
     {
-        private readonly IRepository context;
+        private readonly IRepository<IbgeMunicipio> _context;
 
-        public SearchCityNameService(IRepository repository)
+        public SearchCityNameService(IRepository<IbgeMunicipio> context)
         {
-            context = repository;
+            _context = context;
         }
 
         /// <summary>
@@ -19,7 +22,9 @@ namespace Service.SearchCityNameService
         /// <returns></returns>
         public IbgeMunicipio GetMunicipioByIbgeId(int idIbge)
         {
-            return context.GetMunicipioByIbge(idIbge);
+            Expression<Func<IbgeMunicipio, bool>> expression = x => x.Id == idIbge;
+            var teste = _context.Get(x => x.Id == idIbge);
+            return _context.Get(x => x.Id == idIbge).First();
         }
     }
 }

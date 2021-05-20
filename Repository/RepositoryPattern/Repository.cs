@@ -18,9 +18,9 @@ namespace Repository.RepositoryPattern
             _entity = dbContext.Set<T>();
         }
 
-        public T Get(Expression<Func<T, bool>> expression )
+        public IQueryable<T> Get(Expression<Func<T, bool>> expression )
         {
-            return _entity.FirstOrDefault(expression);
+            return _entity.Where(expression);
         }
 
         public void Insert(T entity)
