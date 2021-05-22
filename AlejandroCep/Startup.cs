@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Repository.DbContextFolder;
-using Repository.RepositoryFolder;
+using Repository.RepositoryPattern;
 using Service.CepService;
 using Service.SearchCityNameService;
 using Service.TokenService;
@@ -57,7 +57,7 @@ namespace AlejandroCep
             services.AddMemoryCache();
 
             services.AddDbContext<ApplicationDbContext>(item => item.UseSqlite(Configuration.GetConnectionString("master")));
-            services.AddScoped(typeof(IRepository), typeof(Repository.RepositoryFolder.Repository));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient(typeof(ICepService), typeof(CepService));
             services.AddTransient(typeof(ISearchCityNameService), typeof(SearchCityNameService));
             services.AddTransient(typeof(ITokenService), typeof(TokenService));

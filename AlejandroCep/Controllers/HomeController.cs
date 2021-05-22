@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Repository.RepositoryFolder;
+using Repository.RepositoryPattern;
 using Service.TokenService;
 using System;
 using System.Collections.Generic;
@@ -16,10 +16,10 @@ namespace AlejandroCep.Controllers
     [Route("v1/account")]
     public class HomeController : ControllerBase
     {
-        private readonly IRepository _context;
+        private readonly IRepository<User> _context;
         private readonly ITokenService _tokenService;
 
-        public HomeController(IRepository repository, ITokenService tokenService)
+        public HomeController(IRepository<User> repository, ITokenService tokenService)
         {
             _context = repository;
             _tokenService = tokenService;
@@ -30,7 +30,8 @@ namespace AlejandroCep.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<dynamic>> Authenticate([FromBody] User model)
         {
-            User user = _context.GetUser(model);
+            User user = _context.Get(user => user.UserName == model.UserName
+                    && user.Password == model.Password).FirstOrDefault();
 
             if (user == null)
                 return NotFound(new { message = "Usuário ou senha inválidos!" });
