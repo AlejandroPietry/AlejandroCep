@@ -8,6 +8,9 @@ namespace Domain.EntityMapper
     {
         public void Configure(EntityTypeBuilder<IbgeMunicipio> builder)
         {
+            builder.HasKey(x => x.Id)
+                .HasName("pk_IbgeId");
+
             builder.Property(x => x.Id)
                 .HasColumnName("id");
 

@@ -8,6 +8,9 @@ namespace Domain.EntityMapper
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.HasKey(x => x.Id)
+                .HasName("pk_user");
+
             builder.Property(x => x.Id)
                 .HasColumnName("id");
 
