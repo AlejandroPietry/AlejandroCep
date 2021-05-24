@@ -16,23 +16,28 @@ namespace Domain.EntityMapper
 
             builder.Property(x => x.DateCreated)
                 .HasColumnName("dateCreated")
-                .HasColumnType("datetime");
+                .HasColumnType("datetime")
+                .IsRequired();
 
             builder.Property(x => x.IsActive)
                 .HasColumnName("isActive")
-                .HasColumnType("bit");
+                .HasColumnType("bit")
+                .IsRequired();
 
             builder.Property(x => x.Password)
                 .HasColumnName("password")
-                .HasColumnType("text");
+                .HasColumnType("text")
+                .IsRequired();
 
             builder.Property(x => x.Role)
                 .HasColumnName("role")
-                .HasColumnType("NVARCHAR(50)");
+                .HasColumnType("NVARCHAR(50)")
+                .IsRequired();
 
             builder.Property(x => x.UserName)
                 .HasColumnName("username")
-                .HasColumnType("NVARCHAR(200)");
+                .HasColumnType("NVARCHAR(200)")
+                .IsRequired();
         }
     }
 }

@@ -15,15 +15,18 @@ namespace Domain.EntityMapper
                 .HasColumnName("id");
 
             builder.Property(x => x.nome)
-                .HasColumnName("nome");
+                .HasColumnName("nome")
+                .IsRequired();
 
             builder.Property(x => x.DateCreated)
                 .HasColumnName("dateCreated")
-                .HasColumnType("datetime");
+                .HasColumnType("datetime")
+                .IsRequired();
 
             builder.Property(x => x.IsActive)
                 .HasColumnName("isActive")
-                .HasColumnType("bit");
+                .HasColumnType("bit")
+                .IsRequired();
         }
     }
 }
