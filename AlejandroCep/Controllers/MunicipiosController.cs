@@ -23,22 +23,24 @@ namespace AlejandroCep.Controllers
             _searchCity = searchCity;
         }
 
-        //[HttpGet(nameof(Index))]
-        //[Authorize(Roles = "Desenvolvedor")]
-        //public IActionResult Index(int id)
-        //{
-        //    var client = new WebClient();
-        //    string json = client.DownloadString(@"https://servicodados.ibge.gov.br/api/v1/localidades/municipios");
+        [HttpGet(nameof(index))]
+        //[Authorize(Roles = "desenvolvedor")]
+        public IActionResult index(int id)
+        {
+            var client = new WebClient();
+            string json = client.DownloadString(@"https://servicodados.ibge.gov.br/api/v1/localidades/municipios");
 
-        //    List<IbgeMunicipio> ibgeMunicipios = JsonSerializer.Deserialize<List<IbgeMunicipio>>(json);
+            List<IbgeMunicipio> ibgemunicipios = JsonSerializer.Deserialize<List<IbgeMunicipio>>(json);
 
-        //    foreach (var cidade in ibgeMunicipios)
-        //    {
-        //        _context.SaveMunicipio(cidade);
-        //    }
+            foreach (var cidade in ibgemunicipios)
+            {
+                cidade.IsActive = true;
+                cidade.DateCreated = DateTime.Now;
+                _searchCity.SalveMunicipio(cidade);
+            }
 
-        //    return Ok("Items salvos com sucesso");
-        //}
+            return Ok("items salvos com sucesso");
+        }
 
         [HttpGet(nameof(GetMunicipio))]
         [AllowAnonymous]
@@ -59,7 +61,7 @@ namespace AlejandroCep.Controllers
                         AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(3600),
                         SlidingExpiration = TimeSpan.FromSeconds(1200)
                     };
-                    _memoryCache.Set(cidadeDados.Id, cidadeDados, memoryCacheEntryOptions);
+                    _memoryCache.Set(cidadeDados.id, cidadeDados, memoryCacheEntryOptions);
                     return Ok(cidadeDados);
                 }
                 else

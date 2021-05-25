@@ -22,9 +22,14 @@ namespace Service.SearchCityNameService
         /// <returns></returns>
         public IbgeMunicipio GetMunicipioByIbgeId(int idIbge)
         {
-            Expression<Func<IbgeMunicipio, bool>> expression = x => x.Id == idIbge;
-            var teste = _context.Get(x => x.Id == idIbge);
-            return _context.Get(x => x.Id == idIbge).First();
+            Expression<Func<IbgeMunicipio, bool>> expression = x => x.id == idIbge;
+            var teste = _context.Get(x => x.id == idIbge);
+            return _context.Get(x => x.id == idIbge).First();
+        }
+
+        public void SalveMunicipio(IbgeMunicipio municipio)
+        {
+            _context.Insert(municipio);
         }
     }
 }

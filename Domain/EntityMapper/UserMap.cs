@@ -8,10 +8,10 @@ namespace Domain.EntityMapper
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(x => x.Id)
+            builder.HasKey(x => x.id)
                 .HasName("pk_user");
 
-            builder.Property(x => x.Id)
+            builder.Property(x => x.id)
                 .HasColumnName("id");
 
             builder.Property(x => x.DateCreated)

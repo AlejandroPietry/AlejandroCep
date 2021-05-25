@@ -22,7 +22,7 @@ namespace AlejandroCep.Controllers
         }
 
         [HttpGet]
-        [Route("Get/{cep}")]
+        [Route("{cep}")]
         [Authorize]
         public IActionResult Get(string cep)
         {

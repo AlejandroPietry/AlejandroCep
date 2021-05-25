@@ -18,7 +18,7 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Domain.Models.IbgeMunicipio", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasColumnName("id");
@@ -36,7 +36,7 @@ namespace Repository.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("nome");
 
-                    b.HasKey("Id")
+                    b.HasKey("id")
                         .HasName("pk_IbgeId");
 
                     b.ToTable("IbgeMunicipio");
@@ -44,7 +44,7 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Domain.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasColumnName("id");
@@ -72,7 +72,7 @@ namespace Repository.Migrations
                         .HasColumnType("NVARCHAR(200)")
                         .HasColumnName("username");
 
-                    b.HasKey("Id")
+                    b.HasKey("id")
                         .HasName("pk_user");
 
                     b.ToTable("User");

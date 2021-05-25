@@ -26,7 +26,7 @@ namespace Service.TokenService
                 Subject = new ClaimsIdentity(new Claim[] 
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.SerialNumber, user.Id.ToString()),
+                    new Claim(ClaimTypes.SerialNumber, user.id.ToString()),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddHours(8),
