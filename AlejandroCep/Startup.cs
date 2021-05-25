@@ -49,6 +49,13 @@ namespace AlejandroCep
                     ValidateAudience = false
                 };
             });
+
+            services.AddStackExchangeRedisCache(options => 
+            {
+                options.InstanceName = "My Redis Instace";
+                options.Configuration = "ip aqui";
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AlejandroCep", Version = "v1" });
