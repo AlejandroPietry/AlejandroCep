@@ -12,6 +12,7 @@ using Repository.RepositoryPattern;
 using Service.CepService;
 using Service.SearchCityNameService;
 using Service.TokenService;
+using System;
 using System.Text;
 
 namespace AlejandroCep
@@ -58,7 +59,25 @@ namespace AlejandroCep
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AlejandroCep", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo 
+                {
+                    Title = "AlejandroCep",
+                    Version = "v1",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Alejandro Pietry",
+                        Url = new Uri("http://alejandropietry.github.io")
+                    }
+                });
+
+                c.AddSecurityDefinition("bearer",
+                    new OpenApiSecurityScheme
+                    {
+                        In = ParameterLocation.Header,
+                        Description = "Autenticação baseada em Json Web Token(JWT)",
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.ApiKey
+                    });
             });
 
             services.AddMemoryCache();

@@ -38,6 +38,11 @@ namespace Domain.EntityMapper
                 .HasColumnName("username")
                 .HasColumnType("NVARCHAR(200)")
                 .IsRequired();
+
+            builder.Property(x => x.Email)
+                .HasColumnName("email")
+                .HasColumnType("NVARCHAR(200)")
+                .IsRequired();
         }
     }
 }
