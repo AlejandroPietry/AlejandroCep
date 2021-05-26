@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Net.WebSockets;
+using Service.UserService;
 
 namespace AlejandroCep.Controllers
 {
@@ -18,20 +19,22 @@ namespace AlejandroCep.Controllers
     {
         private readonly IRepository<User> _context;
         private readonly ITokenService _tokenService;
+        private IUserService _userService;
 
-        public HomeController(IRepository<User> repository, ITokenService tokenService)
+        public HomeController(IRepository<User> repository, ITokenService tokenService, IUserService userService)
         {
             _context = repository;
             _tokenService = tokenService;
+            _userService = userService;
         }
 
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public async Task<ActionResult<dynamic>> Authenticate([FromBody] User model)
+        public async Task<ActionResult<dynamic>> Authenticate(string email, string senha)
         {
-            User user = _context.Get(user => user.UserName == model.UserName
-                    && user.Password == model.Password).FirstOrDefault();
+            User user = _userService.GetUser(user => user.Email == email
+                    && user.Password == senha);
 
             if (user == null)
                 return NotFound(new { message = "Usuário ou senha inválidos!" });
@@ -43,6 +46,18 @@ namespace AlejandroCep.Controllers
                 user = user,
                 token = token
             };
+        }
+
+        [HttpPost]
+        [Route("create")]
+        [AllowAnonymous]
+        public IActionResult CreateUser([FromBody] User user)
+        {
+            if (user is null)
+                return BadRequest(new { message = "Erro ao cadastrar o usuario, verifique os dados!" });
+
+            _userService.CreateUser(user);
+            return Ok(new { message = "Usuário criado com sucesso!" });
         }
 
         [HttpGet]

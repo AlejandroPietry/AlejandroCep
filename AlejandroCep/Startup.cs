@@ -12,7 +12,9 @@ using Repository.RepositoryPattern;
 using Service.CepService;
 using Service.SearchCityNameService;
 using Service.TokenService;
+using Service.UserService;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace AlejandroCep
@@ -69,15 +71,32 @@ namespace AlejandroCep
                         Url = new Uri("http://alejandropietry.github.io")
                     }
                 });
-
-                c.AddSecurityDefinition("bearer",
+                c.AddSecurityDefinition("Bearer",
                     new OpenApiSecurityScheme
                     {
                         In = ParameterLocation.Header,
                         Description = "Autenticação baseada em Json Web Token(JWT)",
                         Name = "Authorization",
-                        Type = SecuritySchemeType.ApiKey
+                        Type = SecuritySchemeType.ApiKey,
+                        Scheme = "Bearer",
                     });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
             });
 
             services.AddMemoryCache();
@@ -87,6 +106,7 @@ namespace AlejandroCep
             services.AddTransient(typeof(ICepService), typeof(CepService));
             services.AddTransient(typeof(ISearchCityNameService), typeof(SearchCityNameService));
             services.AddTransient(typeof(ITokenService), typeof(TokenService));
+            services.AddTransient(typeof(IUserService), typeof(UserService));
 
         }
 
