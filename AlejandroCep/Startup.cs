@@ -56,14 +56,8 @@ namespace AlejandroCep
 
             services.AddStackExchangeRedisCache(options => 
             {
-                options.ConfigurationOptions = new ConfigurationOptions
-                {
-                    EndPoints = { "redis-11918.c263.us-east-1-2.ec2.cloud.redislabs.com:11918" },
-                    Password = "fOTqIm6QsslPptzofoC6nDfINOg1vkNj",
-                    Ssl = true               
-                };
-                options.ConfigurationOptions.ce
-                
+                options.InstanceName = "bd1";
+                options.Configuration = "localhost:6379";
             });
 
             services.AddSwaggerGen(c =>

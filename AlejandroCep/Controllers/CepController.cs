@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using Service.CepService;
 using System;
 using System.Threading.Tasks;
@@ -71,9 +72,7 @@ namespace AlejandroCep.Controllers
             else
             {
                 var dadosCepObj = _cepService.GetCep(cep);
-
-                await _distributedCache.SetStringAsync(dadosCepObj.cep, dadosCepObj.ToString());
-
+                await _distributedCache.SetStringAsync(dadosCepObj.cep, JsonConvert.SerializeObject(dadosCepObj));
                 return Ok(dadosCepObj);
             }
         }
