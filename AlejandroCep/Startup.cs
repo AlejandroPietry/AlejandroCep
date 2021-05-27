@@ -13,6 +13,7 @@ using Service.CepService;
 using Service.SearchCityNameService;
 using Service.TokenService;
 using Service.UserService;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -55,8 +56,14 @@ namespace AlejandroCep
 
             services.AddStackExchangeRedisCache(options => 
             {
-                options.InstanceName = "My Redis Instace";
-                options.Configuration = "ip aqui";
+                options.ConfigurationOptions = new ConfigurationOptions
+                {
+                    EndPoints = { "redis-11918.c263.us-east-1-2.ec2.cloud.redislabs.com:11918" },
+                    Password = "fOTqIm6QsslPptzofoC6nDfINOg1vkNj",
+                    Ssl = true               
+                };
+                options.ConfigurationOptions.ce
+                
             });
 
             services.AddSwaggerGen(c =>
