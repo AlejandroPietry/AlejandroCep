@@ -26,12 +26,13 @@ namespace AlejandroCep.Controllers
         public async Task<ActionResult> Authenticate(string email, string senha)
         {
             User user = _userService.GetUser(user => user.Email == email
-                    && user.Password == senha);
+                    && user.Password == senha && user.IsActive == true);
 
             if (user == null)
                 return NotFound(new { message = "Usuário ou senha inválidos!" });
             string token = _tokenService.GenerateToken(user);
             user.Password = "";
+            user.Email = "";
 
             return Ok(new
             {

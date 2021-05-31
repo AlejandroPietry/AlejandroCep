@@ -24,8 +24,8 @@ namespace AlejandroCep.Controllers
         }
 
         [HttpGet(nameof(index))]
-        //[Authorize(Roles = "desenvolvedor")]
-        public IActionResult index(int id)
+        [Authorize(Roles = "desenvolvedor")]
+        public IActionResult index()
         {
             var client = new WebClient();
             string json = client.DownloadString(@"https://servicodados.ibge.gov.br/api/v1/localidades/municipios");
@@ -42,9 +42,10 @@ namespace AlejandroCep.Controllers
             return Ok("items salvos com sucesso");
         }
 
-        [HttpGet(nameof(GetMunicipio))]
-        [AllowAnonymous]
-        public IActionResult GetMunicipio(int id)
+        [HttpGet]
+        [Route("{id}")]
+        [Authorize]
+        public IActionResult Get(int id)
         {
             if (_memoryCache.TryGetValue(id, out object cidadeData))
             {
@@ -65,7 +66,7 @@ namespace AlejandroCep.Controllers
                     return Ok(cidadeDados);
                 }
                 else
-                    return NotFound("Cidade não encontrada");
+                    return NotFound(new { message = "Cidade não encontrada" });
             }
         }
     }
