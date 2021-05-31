@@ -54,12 +54,6 @@ namespace AlejandroCep
                 };
             });
 
-            services.AddStackExchangeRedisCache(options => 
-            {
-                options.InstanceName = "bd1";
-                options.Configuration = "localhost:6379";
-            });
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo 
