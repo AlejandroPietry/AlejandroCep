@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
 using Service.CepService;
 using System;
-using System.Threading.Tasks;
 
 namespace AlejandroCep.Controllers
 {
@@ -52,7 +50,7 @@ namespace AlejandroCep.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest( new { message = e.Message });
             }
         }
     }

@@ -50,7 +50,7 @@ namespace Service.CepService
             }
             catch(Exception e)
             {
-                throw new Exception("Erro ao buscar o Cep!");
+                throw new Exception("Verifique o CEP  e tente novamente!");
             }
 
         }
