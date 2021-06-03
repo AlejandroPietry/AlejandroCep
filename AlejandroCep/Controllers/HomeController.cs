@@ -1,8 +1,11 @@
 ﻿using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.EmailService;
+using Service.RecoveryPasswordService.cs;
 using Service.TokenService;
 using Service.UserService;
+using System;
 using System.Threading.Tasks;
 
 namespace AlejandroCep.Controllers
@@ -12,12 +15,16 @@ namespace AlejandroCep.Controllers
     public class HomeController : ControllerBase
     {
         private readonly ITokenService _tokenService;
-        private IUserService _userService;
+        private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
+        private readonly IRecoveryPasswordService _recoveryPasswordService;
 
-        public HomeController(ITokenService tokenService, IUserService userService)
+        public HomeController(ITokenService tokenService, IUserService userService, IEmailService emailService, IRecoveryPasswordService recoveryPasswordService)
         {
             _tokenService = tokenService;
             _userService = userService;
+            _emailService = emailService;
+            _recoveryPasswordService = recoveryPasswordService;
         }
 
         [HttpPost]
@@ -51,6 +58,33 @@ namespace AlejandroCep.Controllers
 
             _userService.CreateUser(user);
             return Ok(new { message = "Usuário criado com sucesso!" });
+        }
+
+
+        [HttpPost]
+        [Route("recovery-password")]
+        [AllowAnonymous]
+        public void RecoveryPassword(string email)
+        {
+            User user = _userService.GetUser(user => user.Email == email && user.IsActive == true);
+
+            if (user is null)
+                return;
+
+            var urlrRecoveryPassword = new UrlRecoveryPassword
+            {
+                Guild = Guid.NewGuid().ToString(),
+                IsActive = true,
+                DateCreated = DateTime.Now,
+                UserId = user.id
+            };
+
+            string htmlBody = System.IO.File.ReadAllText(@"E:\Imagens\1622755434595-5SvwGImE8hPpVhTE\index.html");
+
+            htmlBody = htmlBody.Replace("%usename%", user.UserName);
+            _recoveryPasswordService.Insert(urlrRecoveryPassword);
+            _emailService.SendEmail("alejandrocep@alejandrocep.com", "alejandrocep@alejandrocep.com", user.Email, "Recuperação de senha",
+                htmlBody);
         }
 
         //401: nao autorizado pq nao te conhece.

@@ -10,6 +10,8 @@ using Microsoft.OpenApi.Models;
 using Repository.DbContextFolder;
 using Repository.RepositoryPattern;
 using Service.CepService;
+using Service.EmailService;
+using Service.RecoveryPasswordService.cs;
 using Service.SearchCityNameService;
 using Service.TokenService;
 using Service.UserService;
@@ -102,6 +104,8 @@ namespace AlejandroCep
             services.AddTransient(typeof(ISearchCityNameService), typeof(SearchCityNameService));
             services.AddTransient(typeof(ITokenService), typeof(TokenService));
             services.AddTransient(typeof(IUserService), typeof(UserService));
+            services.AddTransient(typeof(IEmailService), typeof(EmailService));
+            services.AddTransient(typeof(IRecoveryPasswordService), typeof(RecoveryPasswordService));
 
         }
 
