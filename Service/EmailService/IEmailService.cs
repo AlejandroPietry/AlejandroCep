@@ -1,4 +1,8 @@
-﻿namespace Service.EmailService
+﻿using Domain.Enum;
+using Domain.Models;
+using System.Threading.Tasks;
+
+namespace Service.EmailService
 {
     public interface IEmailService
     {
@@ -8,5 +12,7 @@
         /// <param name="subject">Assunto.</param>
         /// <param name="body">Corpo do email</param>
         void SendEmail(string sender, string from, string to, string subject, string body);
+        Task SendRecoveryPassword(User user);
+        HtmlEmails GetHtmlEmail(TypeEmail typeEmail);
     }
 }

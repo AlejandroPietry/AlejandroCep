@@ -71,20 +71,7 @@ namespace AlejandroCep.Controllers
             if (user is null)
                 return;
 
-            var urlrRecoveryPassword = new UrlRecoveryPassword
-            {
-                Guild = Guid.NewGuid().ToString(),
-                IsActive = true,
-                DateCreated = DateTime.Now,
-                UserId = user.id
-            };
-
-            string htmlBody = System.IO.File.ReadAllText(@"E:\Imagens\1622755434595-5SvwGImE8hPpVhTE\index.html");
-
-            htmlBody = htmlBody.Replace("%usename%", user.UserName);
-            _recoveryPasswordService.Insert(urlrRecoveryPassword);
-            _emailService.SendEmail("alejandrocep@alejandrocep.com", "alejandrocep@alejandrocep.com", user.Email, "Recuperação de senha",
-                htmlBody);
+            _emailService.SendRecoveryPassword(user);
         }
 
         //401: nao autorizado pq nao te conhece.

@@ -13,6 +13,7 @@ namespace Repository.DbContextFolder
         {
             modelBuilder.ApplyConfiguration(new IbgeMunicipioMap());
             modelBuilder.ApplyConfiguration(new UserMap());
+            modelBuilder.ApplyConfiguration(new HtmlEmailsMap());
             modelBuilder.ApplyConfiguration(new UrlRecoveryPasswordMap());
             base.OnModelCreating(modelBuilder);
         }

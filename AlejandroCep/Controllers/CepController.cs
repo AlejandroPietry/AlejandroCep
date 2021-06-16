@@ -24,7 +24,7 @@ namespace AlejandroCep.Controllers
 
         [HttpGet]
         [Route("{cep}")]
-        [Authorize]
+        //[Authorize]
         public IActionResult Get(string cep)
         {
             try
@@ -41,7 +41,7 @@ namespace AlejandroCep.Controllers
                         AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1200),
                         SlidingExpiration = TimeSpan.FromSeconds(300)
                     };
-                    _memoryCache.Set(dadosCep.cep, dadosCep);
+                    _memoryCache.Set(dadosCep.cep, dadosCep, memoryCacheEntryOptions);
 
                     return Ok(_cepService.GetCep(cep));
                 }

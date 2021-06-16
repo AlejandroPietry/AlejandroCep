@@ -1,15 +1,26 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Domain.Enum;
+using Domain.Models;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Repository.RepositoryPattern;
+using System;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace Service.EmailService
 {
     public class EmailService : IEmailService
     {
         private readonly IConfiguration _configuration;
-        public EmailService(IConfiguration configuration)
+        private IRepository<HtmlEmails> _htmlEmailRepository;
+        private IMemoryCache _memoryCache;
+        public EmailService(IConfiguration configuration, IRepository<HtmlEmails> htmlEmailRepository, IMemoryCache memoryCache)
         {
             _configuration = configuration;
+            _htmlEmailRepository = htmlEmailRepository;
+            _memoryCache = memoryCache;
         }
         
         /// <param name="sender">Remetente.</param>
@@ -51,5 +62,40 @@ namespace Service.EmailService
             }          
         }
 
+        public Task SendRecoveryPassword(User user)
+        {
+            var urlrRecoveryPassword = new UrlRecoveryPassword
+            {
+                Guild = Guid.NewGuid().ToString(),
+                IsActive = true,
+                DateCreated = DateTime.Now,
+                UserId = user.id
+            };
+
+            string htmlBody = GetHtmlEmail(TypeEmail.passwordRecovery).Html;
+            htmlBody = htmlBody.Replace("%usename%", user.UserName);
+
+            SendEmail("alejandrocep@alejandrocep.com", "alejandrocep@alejandrocep.com", user.Email, "Recuperação de senha",
+                htmlBody);
+            return new Task(null);
+        }
+
+        public HtmlEmails GetHtmlEmail(TypeEmail typeEmail)
+        {
+            if (_memoryCache.TryGetValue(typeEmail, out HtmlEmails htmlEmail))
+                return htmlEmail;
+            else
+            {
+                htmlEmail = _htmlEmailRepository.Get(x => x.TypeEmail == TypeEmail.passwordRecovery).FirstOrDefault();
+
+                MemoryCacheEntryOptions memoryCacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1200),
+                    SlidingExpiration = TimeSpan.FromSeconds(300)
+                };
+                _memoryCache.Set(htmlEmail.TypeEmail, htmlEmail, memoryCacheEntryOptions);
+                return htmlEmail;
+            }
+        }
     }
 }
