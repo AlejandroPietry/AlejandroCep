@@ -6,6 +6,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Service.CepService;
 using System;
+using System.Threading.Tasks;
 
 namespace AlejandroCep.Controllers
 {
@@ -25,7 +26,7 @@ namespace AlejandroCep.Controllers
         [HttpGet]
         [Route("{cep}")]
         //[Authorize]
-        public IActionResult Get(string cep)
+        public async Task<IActionResult> Get(string cep)
         {
             try
             {

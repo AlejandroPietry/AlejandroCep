@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace AlejandroCep.Controllers
 {
@@ -25,7 +26,7 @@ namespace AlejandroCep.Controllers
 
         [HttpGet(nameof(index))]
         [Authorize(Roles = "desenvolvedor")]
-        public IActionResult index()
+        public async Task<IActionResult> index()
         {
             var client = new WebClient();
             string json = client.DownloadString(@"https://servicodados.ibge.gov.br/api/v1/localidades/municipios");
@@ -45,7 +46,7 @@ namespace AlejandroCep.Controllers
         [HttpGet]
         [Route("{id}")]
         [Authorize]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             if (_memoryCache.TryGetValue(id, out object cidadeData))
             {

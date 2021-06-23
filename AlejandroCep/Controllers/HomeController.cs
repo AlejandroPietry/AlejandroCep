@@ -51,7 +51,7 @@ namespace AlejandroCep.Controllers
         [HttpPost]
         [Route("create")]
         [AllowAnonymous]
-        public IActionResult CreateUser([FromBody] User user)
+        public async Task<IActionResult> CreateUser([FromBody] User user)
         {
             if (user is null)
                 return BadRequest(new { message = "Erro ao cadastrar o usuario, verifique os dados!" });
@@ -64,7 +64,7 @@ namespace AlejandroCep.Controllers
         [HttpPost]
         [Route("recovery-password")]
         [AllowAnonymous]
-        public void RecoveryPassword(string email)
+        public async void RecoveryPassword(string email)
         {
             User user = _userService.GetUser(user => user.Email == email && user.IsActive == true);
 
